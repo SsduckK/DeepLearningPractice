@@ -12,10 +12,16 @@ class SingleLayer:
         return self.weight @ x + self.bias
 
     def backward(self, dL_dout):
-        pass
+        x = self.x_cache
+        dW = np.outer(dL_dout, x)
+        db = dL_dout
+        dx = self.weight.T @ dL_dout
+
+        return dW, db, dx
 
     def step(self, dw, db, lr):
-        pass
+        self.weight -= lr * dw
+        self.bias -= lr * db
 
 
 def MSE_loss(pred, gt):
@@ -26,15 +32,20 @@ def MSE_loss(pred, gt):
 
 
 def main():
-    input_sample = np.array([19, -96])
+    x = np.array([19, -96])
     GT = np.array([6, -19])
 
     layer = SingleLayer()
+    lr = 1e-4
 
-    pred = layer.forward(input_sample)
+    for i in range(1, 10):
+        pred = layer.forward(x)
+        loss, dL_pred = MSE_loss(pred, GT)
 
-    loss, dL_pred = MSE_loss(pred, GT)
-    print(loss, dL_pred)
+        dW, db, _ = layer.backward(dL_pred)
+        layer.step(dW, db, lr)
+
+        print(f"i={i} loss:{loss:.4f} pred{pred}")
 
 
 if __name__ == "__main__":
