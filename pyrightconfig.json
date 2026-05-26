@@ -1,0 +1,13 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.10",
+  "extraPaths": [
+    ".",
+    "./tests/mmdet_mini",
+    "./third_party/mmdetection",
+    "./third_party/mmdetection3d"
+  ],
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false
+}
