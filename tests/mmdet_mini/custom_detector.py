@@ -23,13 +23,22 @@ class TinyDetector(nn.Module):
             self.head = None
 
     def forward(self, x):
+        print(f"[Input] x: {x.shape}")
+
         feats = self.backbone(x)
+        print("[Backbone output]")
+        for i, feat in enumerate(feats):
+            print(f"  feat[{i}]: {feat.shape}")
 
         if self.neck is not None:
             feats = self.neck(feats)
+            print("[Neck output]")
+            for i, feat in enumerate(feats):
+                print(f"  feat[{i}]: {feat.shape}")
 
         if self.head is not None:
             logits = self.head(feats)
+            print(f"[Head output] logits: {logits.shape}")
             return logits
 
         return feats
